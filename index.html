@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Midnight Board — a fictional candlelit séance. Twenty questions. One last goodbye.">
+  <meta name="theme-color" content="#100d0b">
+  <title>The Midnight Board · A Séance After Dark</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="room" aria-hidden="true"><div class="fog fog-one"></div><div class="fog fog-two"></div></div>
+  <svg class="grain" aria-hidden="true" width="100%" height="100%"><filter id="grain-filter"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#grain-filter)" opacity=".16"/></svg>
+  <main>
+    <header class="masthead">
+      <p class="eyebrow"><span></span> A séance after dark <span></span></p>
+      <h1>The Midnight Board</h1>
+      <p class="invitation">Some doors open only when the world falls quiet.</p>
+    </header>
+
+    <div class="stage">
+      <div class="candle candle-left" aria-hidden="true"><i class="flame"></i><i class="wick"></i><i class="wax"></i><i class="holder"></i></div>
+      <div class="candle candle-right" aria-hidden="true"><i class="flame"></i><i class="wick"></i><i class="wax"></i><i class="holder"></i></div>
+      <section class="board" aria-label="Ouija board" aria-describedby="instructions">
+        <svg class="engraving" viewBox="0 0 1000 540" preserveAspectRatio="none" aria-hidden="true">
+          <rect x="19" y="19" width="962" height="502" rx="37"/>
+          <rect x="28" y="28" width="944" height="484" rx="31"/>
+          <path d="M35 108 Q95 112 108 35 M35 432 Q95 428 108 505 M892 35 Q905 112 965 108 M892 505 Q905 428 965 432"/>
+          <path d="M48 80 Q80 87 80 48 Q56 56 48 80 M920 48 Q920 87 952 80 Q944 56 920 48 M48 460 Q80 453 80 492 Q56 484 48 460 M920 492 Q920 453 952 460 Q944 484 920 492"/>
+          <path d="M365 57 Q420 72 465 54 M535 54 Q580 72 635 57 M410 480 Q450 464 480 480 M520 480 Q550 464 590 480"/>
+          <path d="m500 34 7 15 17 3-12 12 3 17-15-8-15 8 3-17-12-12 17-3z M490 480l10-12 10 12-10 12z"/>
+        </svg>
+        <!-- The window in this wooden marker stays centered on the chosen symbol. -->
+        <div id="planchette" aria-hidden="true">
+          <svg viewBox="0 0 100 130">
+            <defs><linearGradient id="marker-wood" x2=".8" y2="1"><stop stop-color="#b98b52"/><stop offset=".4" stop-color="#79502c"/><stop offset=".7" stop-color="#9c7041"/><stop offset="1" stop-color="#3d2518"/></linearGradient></defs>
+            <path fill="url(#marker-wood)" stroke="#331e11" stroke-width="3" fill-rule="evenodd" d="M50 4C23 4 7 21 6 48C5 77 30 107 50 124C70 107 95 77 94 48C93 21 77 4 50 4ZM50 32a18 18 0 1 0 0 36a18 18 0 1 0 0-36Z"/>
+            <path d="M50 12C28 12 15 26 14 48M86 48C85 26 72 12 50 12M19 75Q32 99 50 114Q68 99 81 75" fill="none" stroke="#d2ae76" stroke-opacity=".55"/>
+            <circle cx="50" cy="50" r="21" fill="none" stroke="#342216" stroke-width="2"/>
+            <path d="m50 81 4 8 8 2-6 5 1 9-7-4-7 4 1-9-6-5 8-2z" fill="none" stroke="#d2ae76" stroke-opacity=".7"/>
+            <path d="M25 17l4 12m42-12-4 12M18 61l10 14m54-14L72 75M32 91l5 10m26 0 5-10" stroke="#362213" opacity=".4"/>
+          </svg>
+        </div>
+        <div class="answers">
+          <span class="celestial sun" aria-hidden="true">☼</span>
+          <button type="button" data-symbol="YES">YES</button>
+          <span class="board-edition">THE VEIL IS THIN</span>
+          <button type="button" data-symbol="NO">NO</button>
+          <span class="celestial moon" aria-hidden="true">☾</span>
+        </div>
+        <div id="letters" class="letters" role="group" aria-label="Letters"></div>
+        <div id="numbers" class="numbers" role="group" aria-label="Numbers"></div>
+        <div class="farewell"><span aria-hidden="true">⸺ ✧</span><button class="goodbye" type="button" data-symbol="GOODBYE">GOODBYE</button><span aria-hidden="true">✧ ⸺</span></div>
+        <p class="board-caption">As above <span aria-hidden="true">✦</span> So below</p>
+      </section>
+    </div>
+
+    <section class="conversation" aria-label="The séance">
+      <div class="whisper"><p class="eyebrow" id="presence">Listen to the silence</p><p id="status" role="status" aria-atomic="true">The room grows still. Something waits beyond the candlelight.</p></div>
+      <form id="question-form">
+        <div class="question-heading"><label for="question">Ask the other side</label><p id="question-count">20 / 20 questions remaining</p></div>
+        <div class="question-line">
+          <textarea id="question" maxlength="120" rows="1" placeholder="Is anyone there?" required aria-describedby="counter speech-help"></textarea>
+          <button id="submit-question" type="submit" aria-label="Ask the ghost">Ask <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="question-meta"><button id="microphone" type="button">Use microphone</button><p id="counter">0 / 120 characters</p></div>
+      </form>
+      <p id="speech-status" role="status"></p>
+      <p id="final-message" role="status" hidden>The twentieth whisper fades. The circle is complete. Goodbye.</p>
+    </section>
+
+    <nav class="ritual-tools" aria-label="Séance controls">
+      <button id="sound" type="button" aria-pressed="false">Sound off</button>
+      <button id="end-session" type="button">End Séance</button>
+      <button id="leave" type="button">Leave <span aria-hidden="true">↗</span></button>
+    </nav>
+    <p id="sound-status" class="quiet-status" role="status"></p>
+    <div class="afterword">
+      <details class="ritual-settings"><summary>Ritual settings &amp; guidance</summary>
+        <label><input id="remember" type="checkbox"> Remember this séance in this tab across refreshes</label>
+        <label><input id="motion" type="checkbox" checked> Movement &amp; atmospheric effects</label>
+        <div class="controls" aria-label="Board selection">
+          <p id="instructions">Select a symbol with a click, or use Tab and Enter. You can turn movement off at any time.</p>
+          <p class="selection" aria-live="polite" aria-atomic="true">Selected: <strong id="selection">—</strong></p>
+          <button id="reset" type="button">Reset board selection</button>
+        </div>
+        <p id="speech-help">Optional speech input fills your question for review before you submit. Your browser's speech service may process audio remotely. This site never stores recordings.</p>
+        <p>A fictional experience. Replies come from a scripted ghost by default, or optional AI. Submitted text and conversation context are sent to OpenAI when AI is enabled. Arrival and farewell are scripted theatrical effects.</p>
+      </details>
+      <details class="transcript"><summary>The whispers so far</summary><ol id="conversation" aria-label="Conversation transcript"></ol></details>
+    </div>
+
+    <dialog id="exit-dialog" aria-labelledby="exit-title" aria-describedby="exit-description">
+      <p class="eyebrow">Every circle can be closed</p><h2 id="exit-title">The candle flickers…</h2>
+      <p id="exit-description">The whisper fades. You may close the circle whenever you wish.</p>
+      <button id="confirm-end" type="button">End séance now</button><button id="confirm-leave" type="button">Leave now</button><button id="stay" type="button">Stay</button>
+    </dialog>
+    <section id="ended" hidden tabindex="-1"><p class="eyebrow">Until another midnight</p><h2>The circle is closed.</h2><p>Your conversation has been cleared. You can close this tab.</p><button id="restart" type="button">Begin a new séance</button></section>
+    <footer>Twenty questions. One last goodbye. <span>Fictional spirits. Real imagination.</span></footer>
+  </main>
+</body>
+</html>
